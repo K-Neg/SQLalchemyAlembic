@@ -3,9 +3,10 @@ from fastapi import FastAPI
 import os
 from fastapi_sqlalchemy import DBSessionMiddleware
 from fastapi_sqlalchemy import db
+from dotenv import load_dotenv
+
 from models import User as ModelUser
 from schema import User as SchemaUser
-from dotenv import load_dotenv
 
 app = FastAPI()
 
