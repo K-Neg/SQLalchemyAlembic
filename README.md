@@ -1,9 +1,13 @@
-# SQLalchemyAlembic
-Tests with alembic
-
-Based on
-https://ahmed-nafies.medium.com/fastapi-with-sqlalchemy-postgresql-and-alembic-and-of-course-docker-f2b7411ee396
+# FastApi with Postgres and compose
 
 
-env be like
-DATABASE_URL = postgresql+psycopg2://{user}:{password}@{host}:{port}
+## Run:
+docker build -t api .
+docker compose up
+
+## Locahost ports (defined at compose file):
+> localhost:5100/docs - API
+> localhost:5050 - PgAdmin
+
+## Database url be like:
+postgresql://{user}:{password}@{postgresserver}:{port}/{db_name}
