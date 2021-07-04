@@ -1,30 +1,26 @@
 import uvicorn
 from fastapi import FastAPI
-import os
-from fastapi_sqlalchemy import DBSessionMiddleware
-from fastapi_sqlalchemy import db
-from dotenv import load_dotenv
-
-from models import User as ModelUser
-from schema import User as SchemaUser
+from database import retrieve_all_users
+import logging
 
 app = FastAPI()
 
-app.add_middleware(DBSessionMiddleware, db_url=os.environ["DATABASE_URL"])
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-load_dotenv(os.path.join(BASE_DIR, ".env"))
+@app.on_event("startup")
+async def startup_event():
+    logging.info(msg="Api started")
 
 
-@app.post("/user/", response_model=SchemaUser)
-def create_user(user: SchemaUser):
-    db_user = ModelUser(
-        first_name=user.first_name, last_name=user.last_name, age=user.age
-    )
-    db.session.add(db_user)
-    db.session.commit()
-    return db_user
+@app.get("/")
+def root():
+    return {"message": "I am online"}
+
+
+@app.get("/users")
+async def get_users():
+    users = await retrieve_all_users()
+    return users
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=5000)
